@@ -146,4 +146,48 @@ public class BookRepository {
         return books;
     }
 
+    public void updateBook(Book book) throws SQLException {
+
+        String sql = """
+            UPDATE books
+            SET title = ?,
+                author = ?,
+                isbn = ?,
+                genre_id = ?,
+                publication_year = ?
+            WHERE id = ?
+            """;
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setString(1, book.getTitle());
+            statement.setString(2, book.getAuthor());
+            statement.setString(3, book.getIsbn());
+            statement.setInt(4, book.getGenreId());
+            statement.setInt(5, book.getPublicationYear());
+            statement.setInt(6, book.getId());
+
+            statement.executeUpdate();
+        }
+    }
+
+    public void deleteBook(int id) throws SQLException {
+
+        String sql = """
+            DELETE FROM books
+            WHERE id = ?
+            """;
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+        }
+    }
+
+
+
 }
